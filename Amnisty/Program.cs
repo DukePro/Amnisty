@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Linq;
+using static System.Console;
 
 namespace Criminals
 {
@@ -27,10 +28,11 @@ namespace Criminals
 
             while (isExit == false)
             {
-                Console.WriteLine(Amnisty + " - Амнистия! Слава Асторцке!");
-                Console.WriteLine(Exit + " - Выход\n");
+                WriteLine();
+                WriteLine(Amnisty + " - Амнистия! Слава Асторцке!");
+                WriteLine(Exit + " - Выход\n");
 
-                userInput = Console.ReadLine();
+                userInput = ReadLine();
 
                 switch (userInput)
                 {
@@ -60,6 +62,11 @@ namespace Criminals
         public string Name { get; private set; }
         public string Crime { get; private set; }
         public bool isImprisoned { get; private set; }
+
+        public void FreePrisoner()
+        {
+            isImprisoned = false;
+        }
 
         private string GetName()
         {
@@ -145,6 +152,8 @@ namespace Criminals
         {
             string imprisonmentStatus;
 
+            WriteLine("\nСписок преступников:\n");
+
             for (int i = 0; i < _criminals.Count; i++)
             {
                 if (_criminals[i].isImprisoned == true)
@@ -156,24 +165,30 @@ namespace Criminals
                     imprisonmentStatus = "На свободе";
                 }
 
-                Console.WriteLine($"{_criminals[i].Name}, {_criminals[i].Crime}, {imprisonmentStatus}");
+                WriteLine($"{_criminals[i].Name}, {_criminals[i].Crime}, {imprisonmentStatus}");
             }
         }
 
         public void PerformAmnisty(string crime)
         {
-            //var criminals = from Criminal criminal in _criminals where criminal.Crime == crime && criminal.isImprisoned == false select new {criminal}; //хз чотут
+            List<Criminal> amistiedCriminals = (from Criminal criminal in _criminals 
+                            where criminal.Crime == crime && criminal.isImprisoned == true 
+                            select criminal).ToList();
 
-            var criminals = from Criminal criminal in _criminals.ToArray() where criminal.Crime == crime && criminal.isImprisoned == true select criminal;
-
-            for (int i = 0; i < _criminals.Count; i++)
+            for (int i = 0; i < amistiedCriminals.Count; i++)
             {
-                if (_criminals[i].Crime == crime)
+                if (amistiedCriminals[i].Crime == crime)
                 {
-                    criminals.isImprisoned = false;
+                    amistiedCriminals[i].FreePrisoner();
                 }
             }
 
+            WriteLine("\nАмнистированы:\n");
+
+            foreach (var criminal in amistiedCriminals)
+            {
+                WriteLine($"{criminal.Name}");
+            }
         }
 
         public void CreateCriminals()
