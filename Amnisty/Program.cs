@@ -23,8 +23,8 @@ namespace Criminals
             string amnistyCrime = "Антиправительственное";
             bool isExit = false;
 
-            DataBase dataBase = new DataBase();
-            dataBase.CreateCriminals();
+            Database database = new Database();
+            database.CreateCriminals();
 
             while (isExit == false)
             {
@@ -37,9 +37,9 @@ namespace Criminals
                 switch (userInput)
                 {
                     case Amnisty:
-                        dataBase.ShowAllCriminals();
-                        dataBase.PerformAmnisty(amnistyCrime);
-                        dataBase.ShowAllCriminals();
+                        database.ShowAllCriminals();
+                        database.PerformAmnisty(amnistyCrime);
+                        database.ShowAllCriminals();
                         break;
 
                     case Exit:
@@ -143,7 +143,7 @@ namespace Criminals
         }
     }
 
-    class DataBase
+    class Database
     {
         private int ammountOfRecords = 20;
         private List<Criminal> _criminals = new List<Criminal>();
