@@ -28,6 +28,7 @@ namespace Amnisty
 
             while (isExit == false)
             {
+                database.ShowAllCriminals();
                 WriteLine();
                 WriteLine(Amnisty + " - Амнистия! Слава Асторцке!");
                 WriteLine(Exit + " - Выход\n");
@@ -37,9 +38,7 @@ namespace Amnisty
                 switch (userInput)
                 {
                     case Amnisty:
-                        database.ShowAllCriminals();
                         database.PerformAmnisty(amnistyCrime);
-                        database.ShowAllCriminals();
                         break;
 
                     case Exit:
@@ -62,11 +61,6 @@ namespace Amnisty
         public string Name { get; private set; }
         public string Crime { get; private set; }
         public bool isImprisoned { get; private set; }
-
-        public void FreePrisoner()
-        {
-            isImprisoned = false;
-        }
 
         private string GetName()
         {
@@ -171,23 +165,18 @@ namespace Amnisty
 
         public void PerformAmnisty(string crime)
         {
-            List<Criminal> amistiedCriminals = (from Criminal criminal in _criminals 
-                            where criminal.Crime == crime && criminal.isImprisoned == true 
-                            select criminal).ToList();
-
-            for (int i = 0; i < amistiedCriminals.Count; i++)
-            {
-                if (amistiedCriminals[i].Crime == crime)
-                {
-                    amistiedCriminals[i].FreePrisoner();
-                }
-            }
+            var amistiedCriminals = _criminals.Where(criminal => criminal.Crime == crime).ToList();
 
             WriteLine("\nАмнистированы:\n");
 
             foreach (var criminal in amistiedCriminals)
             {
                 WriteLine($"{criminal.Name}");
+            }
+
+            for (int i = 0; i < amistiedCriminals.Count; i++)
+            {
+                _criminals.Remove(amistiedCriminals[i]);
             }
         }
 
