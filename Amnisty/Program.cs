@@ -64,8 +64,8 @@ namespace Amnisty
 
         private string GetName()
         {
-            string[] criminalNames = new string[]
-            {
+            string[] criminalNames =
+            [
         "Толя Руль",
         "Вася Шнырь",
         "Петруха Кабан",
@@ -100,7 +100,7 @@ namespace Amnisty
         "Паша Кабриолет",
         "Коля Чмырь",
         "Миша Мафиозник"
-            };
+            ];
 
             string name = criminalNames[Utils.GetRandomNumber(criminalNames.Length - 1)];
             return name;
@@ -108,8 +108,8 @@ namespace Amnisty
 
         private string GetCrime()
         {
-            string[] crimes = new string[]
-            {
+            string[] crimes =
+            [
         "Антиправительственное",
         "Угон",
         "Воровство",
@@ -118,7 +118,7 @@ namespace Amnisty
         "Несмешные Мемы",
         "Кринж",
         "Инфоцыганство"
-            };
+            ];
 
             string crime = crimes[Utils.GetRandomNumber(crimes.Length - 1)];
             return crime;
