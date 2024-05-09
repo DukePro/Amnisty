@@ -165,19 +165,7 @@ namespace Amnisty
 
         public void PerformAmnisty(string crime)
         {
-            var amistiedCriminals = _criminals.Where(criminal => criminal.Crime == crime).ToList();
-
-            WriteLine("\nАмнистированы:\n");
-
-            foreach (var criminal in amistiedCriminals)
-            {
-                WriteLine($"{criminal.Name}");
-            }
-
-            for (int i = 0; i < amistiedCriminals.Count; i++)
-            {
-                _criminals.Remove(amistiedCriminals[i]);
-            }
+            _criminals = _criminals.Where(criminal => criminal.Crime != crime).ToList();
         }
 
         public void CreateCriminals()
