@@ -51,16 +51,56 @@ namespace Amnisty
 
     class Criminal
     {
-        public Criminal()
+        public Criminal(string name, string crime, bool imprisonmentStatus)
         {
-            Name = GetName();
-            Crime = GetCrime();
-            isImprisoned = GetImprisonmentStatus();
+            Name = name;
+            Crime = crime;
+            isImprisoned = imprisonmentStatus;
         }
 
         public string Name { get; private set; }
         public string Crime { get; private set; }
         public bool isImprisoned { get; private set; }
+    }
+
+    class Database
+    {
+        private int ammountOfRecords = 20;
+        private List<Criminal> _criminals = new List<Criminal>();
+
+        public void ShowAllCriminals()
+        {
+            string imprisonmentStatus;
+
+            WriteLine("\nСписок преступников:\n");
+
+            for (int i = 0; i < _criminals.Count; i++)
+            {
+                if (_criminals[i].isImprisoned == true)
+                {
+                    imprisonmentStatus = "В тюрьме";
+                }
+                else
+                {
+                    imprisonmentStatus = "На свободе";
+                }
+
+                WriteLine($"{_criminals[i].Name}, {_criminals[i].Crime}, {imprisonmentStatus}");
+            }
+        }
+
+        public void PerformAmnisty(string crime)
+        {
+            _criminals = _criminals.Where(criminal => criminal.Crime != crime).ToList();
+        }
+
+        public void CreateCriminals()
+        {
+            for (int i = 0; i < ammountOfRecords; i++)
+            {
+                _criminals.Add(new Criminal(GetName(),GetCrime(),GetImprisonmentStatus()));
+            }
+        }
 
         private string GetName()
         {
@@ -134,46 +174,6 @@ namespace Amnisty
             }
 
             return isImprisoned;
-        }
-    }
-
-    class Database
-    {
-        private int ammountOfRecords = 20;
-        private List<Criminal> _criminals = new List<Criminal>();
-
-        public void ShowAllCriminals()
-        {
-            string imprisonmentStatus;
-
-            WriteLine("\nСписок преступников:\n");
-
-            for (int i = 0; i < _criminals.Count; i++)
-            {
-                if (_criminals[i].isImprisoned == true)
-                {
-                    imprisonmentStatus = "В тюрьме";
-                }
-                else
-                {
-                    imprisonmentStatus = "На свободе";
-                }
-
-                WriteLine($"{_criminals[i].Name}, {_criminals[i].Crime}, {imprisonmentStatus}");
-            }
-        }
-
-        public void PerformAmnisty(string crime)
-        {
-            _criminals = _criminals.Where(criminal => criminal.Crime != crime).ToList();
-        }
-
-        public void CreateCriminals()
-        {
-            for (int i = 0; i < ammountOfRecords; i++)
-            {
-                _criminals.Add(new Criminal());
-            }
         }
     }
 
